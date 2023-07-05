@@ -4,7 +4,7 @@ require_relative '../item'
 
 describe Genre do
   let(:genre) { Genre.new('Comedy') }
-  let(:item) { Item.new }
+  let(:item) { Item.new false }
 
   describe '#initialize' do
     it 'should set a random id' do
