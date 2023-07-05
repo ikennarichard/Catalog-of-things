@@ -4,7 +4,7 @@ require_relative 'genre'
 class MusicAlbum < Item
   attr_accessor :on_spotify, :title
 
-  def initialize(id=nil, title, on_spotify: false)
+  def initialize(title, id = nil, on_spotify: false)
     super(id)
     @title = title
     @on_spotify = on_spotify
