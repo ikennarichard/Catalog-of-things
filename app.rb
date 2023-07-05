@@ -29,7 +29,8 @@ class App
     else
       puts 'Album details'
       @music_albums.each do |album|
-        puts "Title: #{album['title']} - Release year: #{album['publish_date']} - Music genre: #{album['genre'].upcase} on_Spotify: #{album['on_spotify'] == true ? 'Yes' : 'No'}"
+        puts "Title: #{album['title']} - Release year: #{album['publish_date']} - " \
+             "Music genre: #{album['genre'].upcase} on_Spotify: #{album['on_spotify'] ? 'Yes' : 'No'}"
       end
       puts
     end
