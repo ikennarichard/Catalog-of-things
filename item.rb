@@ -1,16 +1,17 @@
 require 'date'
 
 class Item
-  attr_reader :id, :publish_date, :archived
+  attr_reader :id, :archived
+  attr_accessor :publish_date, :genre, :author, :source, :label
 
   def initializer(publish_date, archived: false)
     @id = Random.rand(0...1000)
-    @publish_date = publish_date
+    @publish_date = Date.parse(publish_date)
     @archived = archived
   end
 
   def can_be_archived?
-    Time.now.year - Date.parse(@publish_date).year > 10
+    Time.now.year - publish_date.year > 10
   end
 
   def move_to_archive
