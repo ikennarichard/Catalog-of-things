@@ -7,7 +7,7 @@ describe Game do
 
       expect(game.multiplayer).to eq(true)
       expect(game.last_played_at).to eq('01-01-2020')
-      expect(game.publish_date).to eq(Date.parse('01-05-2011'))
+      expect(game.publish_date).to eq('01-05-2011')
       expect(game.archived).to eq(false)
     end
   end
