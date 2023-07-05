@@ -7,13 +7,13 @@ describe Game do
 
       expect(game.multiplayer).to eq(true)
       expect(game.last_played_at).to eq('01-01-2020')
-      expect(game.publish_date).to eq('01-05-2011')
+      expect(game.publish_date).to eq(Date.parse('01-05-2011'))
       expect(game.archived).to eq(false)
     end
   end
 
   describe '#can_be_archived?' do
-    it 'should be true only if game cane be archive' do
+    it 'should be true only if game can be archived' do
       game1 = Game.new(true, '2019-01-01', '2022-01-01', true)
       expect(game1.can_be_archived?).to eq(false)
 
