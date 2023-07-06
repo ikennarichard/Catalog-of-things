@@ -20,7 +20,7 @@ class GameHandler
     end
   end
 
-  class ManageGame
+  def manage_game
     loop do
       puts ''
       options.call
@@ -46,7 +46,7 @@ class GameHandler
     first_name = gets.chomp
     print 'Please enter author\'s last_name '
     last_name = gets.chomp
-    print 'Are multiplayer option available? (Y/N): '
+    print 'Are multiplayers option available? (Y/N): '
     multiplayer_game = gets.chomp.downcase == 'y'
     print 'Please enter last_played_date (DD/MM/YYYY): '
     last_played_date = gets.chomp
@@ -67,35 +67,33 @@ class GameHandler
   end
 
   def display_games
-    my_function do
-      puts ''
-      if @games.empty?
-        puts 'No record for game found'
-      else
-        puts 'List of all Games:'
-        @games.each do |game|
-          puts '......................................................'
-          puts "Author: #{game.author.full_name}"
-          puts "Last Played Date: #{game.last_played_date}"
-          puts "Publish Date: #{game.released_date}"
-          puts '......................................................'
-        end
+    puts ''
+    if @games.empty?
+      puts 'No record for game found'
+    else
+      puts 'List of all Games:'
+      @games.each do |game|
+        puts '......................................................'
+        puts "Author: #{game.author.full_name}"
+        puts "Last Played Date: #{game.last_played_date}"
+        puts "Publish Date: #{game.released_date}"
+        puts '......................................................'
       end
-      retrieve_data
+    end
+    retrieve_data
   end
 
   def display_authors
-    my_function do
-      puts ''
-      if @authors.empty?
-        puts 'No record for authors found'
-      else
-        puts 'List of all Authors:'
-        authors.each_with_index do |author, index|
-          puts "Author #{index + 1}: #{author.full_name}"
-        end
+    puts ''
+    if @authors.empty?
+      puts 'No record for authors found'
+    else
+      puts 'List of all Authors:'
+      authors.each_with_index do |author, index|
+        puts "Author #{index + 1}: #{author.full_name}"
       end
-      retrieve_data
+    end
+    retrieve_data
   end
 
   def preserve_game
