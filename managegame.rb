@@ -2,12 +2,19 @@ require_relative 'author'
 require_relative 'game'
 require 'json'
 
+class GameHandler
+    def initialize
+      @games = []
+      @authors = []
+      load_games_data
+    end
+    
 def options
   my_function do
-    puts 'Please choose the options:'
+    puts 'Please choose an options:'
     puts '1. List all games'
     puts '2. List all authors'
-    puts '3. Add a game'
+    puts '3. Add new game'
     puts '4. Exit'
     print '>> '
   end

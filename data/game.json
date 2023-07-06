@@ -1,0 +1,29 @@
+[
+    {
+      "id": 102,
+      "multiplayer": true,
+      "last_played_at": "03/07/2003",
+      "publish_date": "01/01/2007",
+      "archived": {
+        "archived": false
+      }
+    },
+    {
+      "id": 299,
+      "multiplayer": false,
+      "last_played_at": "23/04/2011",
+      "publish_date": "14/11/2021",
+      "archived": {
+        "archived": false
+      }
+    },
+    {
+      "id": 614,
+      "multiplayer": false,
+      "last_played_at": "",
+      "publish_date": "",
+      "archived": {
+        "archived": false
+      }
+    }
+  ]
