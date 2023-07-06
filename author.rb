@@ -1,9 +1,8 @@
 class Author
-  attr_accessor :first_name, :last_name
-  attr_reader :items
+  attr_reader :first_name, :last_name, :items, :id
 
   def initialize(first_name, last_name)
-    @id = id
+    @id = create_id
     @first_name = first_name
     @last_name = last_name
     @items = []
@@ -11,12 +10,30 @@ class Author
 
   def add_item(item)
     @items << item
-    item.author = self
   end
 
   private
 
-  def id
+  def create_id
     Random.rand(1..1000)
+  end
+
+  def to_json(_param)
+    author = {
+      'id' => @id,
+      'first_name' => @first_name,
+      'last_name' => @last_name,
+      'items' => []
+    }
+    @items.each do |element|
+      author['elements'] << {
+        'id' => item.id,
+        'multiplayer' => element.multiplayer,
+        'last_played_at' => element.last_played_at,
+        'publish_date' => element.publish_date,
+        'archived' => element.archived
+      }
+    end
+    author.to_json
   end
 end
