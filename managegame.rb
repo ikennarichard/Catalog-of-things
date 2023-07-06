@@ -1,7 +1,6 @@
-require_relative './author'
-require_relative './game'
+require_relative 'author'
+require_relative 'game'
 require 'json'
-
 
 def options
   my_function do
