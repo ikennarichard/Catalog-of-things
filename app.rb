@@ -30,16 +30,9 @@ class App
     game = Game.new(multiplayer_game, last_played_date, released_date, archived: false)
     author = Author.new(first_name, last_name)
     author.add_item(game)
-    @games << {
-      'id' => game.id,
-      'multiplayer_game' => game.multiplayer,
-      'last_played_date' => game.last_played_at,
-      'released_date' => game.publish_date
-    }
-    @authors << {
-      'first_name' => game.author.first_name,
-      'last_name' => game.author.last_name
-    }
+    @games << { 'id' => game.id, 'multiplayer_game' => game.multiplayer, 'last_played_date' => game.last_played_at,
+                'released_date' => game.publish_date }
+    @authors << { 'first_name' => game.author.first_name, 'last_name' => game.author.last_name }
     puts "\nSuccessfully added new game"
     preserve_game(@games)
     preserve_author(@authors)
