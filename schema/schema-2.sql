@@ -17,3 +17,17 @@ CREATE TABLE music_album (
   FOREIGN KEY (author_id) REFERENCES author (id),
   FOREIGN KEY (source_id) REFERENCES source (id),
 );
+
+  CREATE TABLE Book (
+    id INT NOT NULL,
+    publisher VARCHAR(255) NOT NULL,
+    cover_state VARCHAR(255) NOT NULL,
+    FOREIGN KEY (id) REFERENCES item (id)
+  );
+
+CREATE TABLE Label (
+  id INT NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  color VARCHAR(255) NOT NULL,
+  FOREIGN KEY (id) REFERENCES item (label)
+);
