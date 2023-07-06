@@ -1,21 +1,17 @@
 CREATE TABLE author (
-  id SERIAL PRIMARY KEY,
-  fisrt_name VARCHAR(250) NOT NULL
-  last_name VARCHAR(250) NOT NULL
+  id int generated always as identity,
+  fisrt_name VARCHAR(250) NOT NULL,
+  last_name VARCHAR(250) NOT NULL,
+  PRIMARY KEY (id)
 );
 
 CREATE TABLE game (
-  id SERIAL PRIMARY KEY,
+  id int generated always as identity,
   publish_date DATE,
-  genre_id INT NOT NULL,
   author_id INT NOT NULL,
-  label_id INT NOT NULL,
-  source_id INT NOT NULL,
   archived BOOLEAN NOT NULL,
-  multiplayer BOOLEAN NOT NULL,
+  multiplayer VARCHAR(250) NOT NULL,
   last_played_at DATE,
-  FOREIGN KEY (genre_id) REFERENCES genres (id)
-  FOREIGN KEY (label_id) REFERENCES label (id),
-  FOREIGN KEY (author_id) REFERENCES author (id),
-  FOREIGN KEY (source_id) REFERENCES source (id),
+    CONSTRAINT fk_author FOREIGN KEY (author_id) REFERENCES author(id),
+    primary key (id)
 );
