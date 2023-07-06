@@ -2,65 +2,71 @@ require_relative 'author'
 require_relative 'game'
 require 'json'
 
-def options
-  my_function do
-    puts 'Please choose the options:'
-    puts '1. List all games'
-    puts '2. List all authors'
-    puts '3. Add a game'
-    puts '4. Exit'
-    print '>> '
+class GameHandler
+  def initialize
+    @games = []
+    @authors = []
+    retrieve_data
   end
-end
 
-class ManageGame
-  loop do
-    puts ''
-    options.call
-    option = gets.chomp.to_i
-    case option
-    when 1
-      display_games.call
-    when 2
-      display_authors.call
-    when 3
-      create_game.call
-    when 4
-      break
-    else
-      puts 'Invalid option. please re-enter.'
+  def options
+    my_function do
+      puts 'Please choose an options:'
+      puts '1. List all games'
+      puts '2. List all authors'
+      puts '3. Add new game'
+      puts '4. Exit'
+      print '>> '
     end
   end
-end
 
-def create_game
-  puts ''
-  print 'Please enter author\'s first_name'
-  first_name = gets.chomp
-  print 'Please enter author\'s last_name '
-  last_name = gets.chomp
-  print 'Are multiplayer option available? (Y/N): '
-  multiplayer_game = gets.chomp.downcase == 'y'
-  print 'Please enter last_played_date (DD/MM/YYYY): '
-  last_played_date = gets.chomp
-  print 'Please enter game_published_date (DD/MM/YYYY): '
-  released_date = gets.chomp
+  def manage_game
+    loop do
+      puts ''
+      options.call
+      option = gets.chomp.to_i
+      case option
+      when 1
+        display_games.call
+      when 2
+        display_authors.call
+      when 3
+        create_game.call
+      when 4
+        break
+      else
+        puts 'Invalid option. please re-enter.'
+      end
+    end
+  end
 
-  game = Game.new(multiplayer_game, last_played_date, released_date, archived: false)
-  author = Author.new(first_name, last_name)
-  author.add_item(game)
+  def create_game
+    puts ''
+    print 'Please enter author\'s first_name'
+    first_name = gets.chomp
+    print 'Please enter author\'s last_name '
+    last_name = gets.chomp
+    print 'Are multiplayers option available? (Y/N): '
+    multiplayer_game = gets.chomp.downcase == 'y'
+    print 'Please enter last_played_date (DD/MM/YYYY): '
+    last_played_date = gets.chomp
+    print 'Please enter game_published_date (DD/MM/YYYY): '
+    released_date = gets.chomp
 
-  @games << game
-  @authors << author
+    game = Game.new(multiplayer_game, last_played_date, released_date, archived: false)
+    author = Author.new(first_name, last_name)
+    author.add_item(game)
 
-  puts "\nSuccessfully added new game"
+    @games << game
+    @authors << author
 
-  preserve_game
-  preserve_author
-end
+    puts "\nSuccessfully added new game"
 
-def display_games
-  my_function do
+    preserve_game
+    preserve_author
+  end
+
+  def display_games
     puts ''
     if @games.empty?
       puts 'No record for game found'
@@ -74,11 +80,10 @@ def display_games
         puts '......................................................'
       end
     end
+    retrieve_data
   end
-end
 
-def display_authors
-  my_function do
+  def display_authors
     puts ''
     if @authors.empty?
       puts 'No record for authors found'
@@ -88,46 +93,47 @@ def display_authors
         puts "Author #{index + 1}: #{author.full_name}"
       end
     end
+    retrieve_data
   end
-end
 
-def preserve_game
-  json = []
-  @games.each do |game|
-    json << game.to_json
+  def preserve_game
+    json = []
+    @games.each do |game|
+      json << game.to_json
+    end
+    File.write('data/game.json', JSON.pretty_generate(json))
   end
-  File.write('db/game.json', JSON.pretty_generate(json))
-end
 
-def preserve_author
-  json = []
-  @authors.each do |_author|
-    json << game.to_json
+  def preserve_author
+    json = []
+    @authors.each do |_author|
+      json << game.to_json
+    end
+    File.write('data/author.json', JSON.pretty_generate(json))
   end
-  File.write('db/authors.json', JSON.pretty_generate(json))
-end
 
-def retrieve_game
-  return unless File.exist?('db/games.json')
-  return if File.empty?('db/games.json')
-
-  games = JSON.parse(File.read('db/games.json'))
-  games.each do |game|
-    @games << Game.new(game['last_played_at'], game['publish_date'], multiplayer: game['multiplayer'])
+  def retrieve_data
+    retrieve_game
+    retrieve_authors
   end
-end
 
-def retrieve_author
-  return unless File.exist?('db/author.json')
-  return if File.empty?('db/author.json')
+  def retrieve_game
+    return unless File.exist?('data/game.json')
+    return if File.empty?('data/game.json')
 
-  JSON.parse(File.read('db/authors.json'))
-  author.each do |author|
-    @author << Author.new(author['first_name'], author['last_name'])
+    games = JSON.parse(File.read('data/game.json'))
+    @games = games.map do |game|
+      Game.new(game['multiplayer_game'], game['last_played_date'], game['released_date'], archived: false)
+    end
   end
-end
 
-def retrieve_data
-  retrieve_game
-  retrieve_authors
+  def retrieve_author
+    return unless File.exist?('data/author.json')
+    return if File.empty?('data/author.json')
+
+    authors = JSON.parse(File.read('data/author.json'))
+    @authors = authors.map do |author|
+      Author.new(author['first_name'], author['last_name'])
+    end
+  end
 end
