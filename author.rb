@@ -18,20 +18,20 @@ class Author
   def id
     Random.rand(1..1000)
   end
-  def to_json(*_args)
+  def to_json(param)
     author = {
       'id' => @id,
       'first_name' => @first_name,
       'last_name' => @last_name,
       'items' => []
     }
-    @items.each do |item|
-      author['items'] << {
+    @items.each do |element|
+      author['elements'] << {
         'id' => item.id,
-        'multiplayer' => item.multiplayer,
-        'last_played_at' => item.last_played_at,
-        'publish_date' => item.publish_date,
-        'archived' => item.archived
+        'multiplayer' => element.multiplayer,
+        'last_played_at' => element.last_played_at,
+        'publish_date' => element.publish_date,
+        'archived' => element.archived
       }
     end
     author.to_json
