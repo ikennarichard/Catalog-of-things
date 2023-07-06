@@ -10,6 +10,8 @@ class Item
     @archived = archived
   end
 
+  private
+
   def can_be_archived?
     Time.now.year - Date.parse(publish_date).year > 10
   end
