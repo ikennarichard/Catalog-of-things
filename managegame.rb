@@ -119,7 +119,7 @@ class MaganeGame
     File.write('db/authors.json', JSON.pretty_generate(json))
   end
   
-  def load_games
+  def retrieve_game
     return unless File.exist?('db/games.json')
     return if File.empty?('db/games.json')
   
@@ -129,7 +129,7 @@ class MaganeGame
     end
   end
   
-  def load_author
+  def retrieve_author
     return unless File.exist?('db/author.json')
     return if File.empty?('db/author.json')
   
@@ -139,8 +139,8 @@ class MaganeGame
     end
   end
   
-  def load_games_data
-    load_games
-    load_authors
+  def retrieve_game_data
+    retrieve_game
+    retrieve_authors
   end
 end
