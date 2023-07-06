@@ -15,14 +15,6 @@ def print_options
   end
 
 class MaganeGame
-#   attr_accessor :games, :authors
-
-#   def initialize
-#     @games = []
-#     @authors = []
-#   end
-
-#   def start
     loop do
       puts ''
       print_options.call
@@ -42,7 +34,6 @@ class MaganeGame
     end
   end
 
-#   private
   def create_game
     my_function {
       puts ''
