@@ -14,4 +14,13 @@ class Game < Item
     years_since_last_played = Time.now.year - Date.parse(@last_played_at).year > 2
     super && years_since_last_played
   end
+  def to_json(*_args)
+    {
+      'id' => @id,
+      'multiplayer' => @multiplayer,
+      'last_played_at' => @last_played_at,
+      'publish_date' => @publish_date,
+      'archived' => @archived
+    }
+  end
 end
