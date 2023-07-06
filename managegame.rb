@@ -114,13 +114,18 @@ def preserve_author
   File.write('data/author.json', JSON.pretty_generate(json))
 end
 
+def retrieve_data
+    retrieve_game
+    retrieve_authors
+  end
+
 def retrieve_game
-  return unless File.exist?('data/games.json')
+  return unless File.exist?('data/game.json')
   return if File.empty?('data/game.json')
 
   games = JSON.parse(File.read('data/game.json'))
-  games.each do |game|
-    @games << Game.new(game['last_played_at'], game['publish_date'], multiplayer: game['multiplayer'])
+  @games = games.map do |game|
+    Game.new(game['multiplayer_game'], game['last_played_date'], game['released_date'], archived: false)
   end
 end
 
@@ -128,13 +133,9 @@ def retrieve_author
   return unless File.exist?('data/author.json')
   return if File.empty?('data/author.json')
 
-  JSON.parse(File.read('data/author.json'))
-  author.each do |author|
-    @author << Author.new(author['first_name'], author['last_name'])
+  authors= JSON.parse(File.read('data/author.json'))
+  @authors = authors.map do |author|
+    Author.new(author['first_name'], author['last_name'])
   end
 end
-
-def retrieve_data
-  retrieve_game
-  retrieve_authors
 end
