@@ -1,4 +1,3 @@
-
 require_relative 'app'
 class Options
   def display_options
@@ -39,5 +38,4 @@ class Options
       true
     end
   end
-  
 end

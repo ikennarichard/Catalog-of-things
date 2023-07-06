@@ -100,13 +100,8 @@ class App
   end
 
   def to_json(param)
-    {
-      'id' => param.id,
-      'multiplayer' => param.multiplayer,
-      'last_played_at' => param.last_played_at,
-      'publish_date' => param.publish_date,
-      'archived' => param.archived
-    }
+    { 'id' => param.id, 'multiplayer' => param.multiplayer, 'last_played_at' => param.last_played_at,
+      'publish_date' => param.publish_date, 'archived' => param.archived }
   end
 
   # music albums
@@ -168,14 +163,16 @@ class App
   end
 
   # //////////////BOOKS////////////////
-  
   def list_books
-    if File.exist?('./data/books.json')
-      @books = JSON.parse(File.read('./data/books.json')) rescue []
-    else
-      @books = []
-    end
-  
+    @books = if File.exist?('./data/books.json')
+               begin
+                 JSON.parse(File.read('./data/books.json'))
+               rescue StandardError
+                 []
+               end
+             else
+               []
+             end
     if @books.empty?
       puts 'No books found'
     else
@@ -185,15 +182,17 @@ class App
       end
     end
   end
-  
-  
+
   def list_labels
-    if File.exist?('./data/labels.json')
-      @labels = JSON.parse(File.read('./data/labels.json')) rescue []
-    else
-      @labels = []
-    end
-  
+    @labels = if File.exist?('./data/labels.json')
+                begin
+                  JSON.parse(File.read('./data/labels.json'))
+                rescue StandardError
+                  []
+                end
+              else
+                []
+              end
     if @labels.empty?
       puts 'No labels found'
     else
@@ -202,47 +201,68 @@ class App
       end
     end
   end
-  
-  
-    def add_book
-      @books = File.exist?('./data/books.json') ? JSON.parse(File.read('./data/books.json')) : []
-      print 'Enter publisher: '
-      publisher = gets.chomp
-    
-      print 'Enter cover state: '
-      cover_state = gets.chomp
-    
-      print 'Enter publish date (yyyy-mm-dd): '
-      publish_date_str = gets.chomp
-      publish_date = Date.parse(publish_date_str) rescue nil
-    
-      if publisher.empty? || cover_state.empty? || publish_date.nil?
-        puts 'Invalid input. Book not added.'
-      else
-        book = Book.new(publisher, cover_state, publish_date&.to_s || '')
-        @books << { 'publisher' => book.publisher, 'cover_state' => book.cover_state, 'publish_date' => book.publish_date }
-        File.write('./data/books.json', JSON.generate(@books))
-        puts 'Book added successfully!'
-      end
-    end    
-    
-    def add_label
-      @labels = File.exist?('./data/labels.json') ? JSON.parse(File.read('./data/labels.json')) : []
-      print 'Enter title: '
-      title = gets.chomp
-    
-      print 'Enter color: '
-      color = gets.chomp
-    
-      if title.empty? || color.empty?
-        puts 'Invalid input. Label not added.'
-      else
-        label = Label.new(title, color)
-        @labels << label
-        File.write('./data/labels.json', JSON.generate(@labels.map(&:to_h)))
-        puts 'Label added successfully!'
-      end
+
+  def add_book
+    @books = retrieve_books
+
+    publisher = get_user_input('Enter publisher: ')
+    cover_state = get_user_input('Enter cover state: ')
+    publish_date_str = get_user_input('Enter publish date (yyyy-mm-dd): ')
+    publish_date = parse_date(publish_date_str)
+
+    return puts 'Invalid input. Book not added.' if invalid_input?(publisher, cover_state, publish_date)
+
+    book = create_book(publisher, cover_state, publish_date)
+    add_book_to_collection(book)
+    save_books
+
+    puts 'Book added successfully!'
+  end
+
+  def retrieve_books
+    File.exist?('./data/books.json') ? JSON.parse(File.read('./data/books.json')) : []
+  end
+
+  def get_user_input(prompt)
+    print prompt
+    gets.chomp
+  end
+
+  def parse_date(date_str)
+    Date.parse(date_str)
+  rescue StandardError
+    nil
+  end
+
+  def invalid_input?(publisher, cover_state, publish_date)
+    publisher.empty? || cover_state.empty? || publish_date.nil?
+  end
+
+  def create_book(publisher, cover_state, publish_date)
+    Book.new(publisher, cover_state, publish_date&.to_s || '')
+  end
+
+  def add_book_to_collection(book)
+    @books << { 'publisher' => book.publisher, 'cover_state' => book.cover_state, 'publish_date' => book.publish_date }
+  end
+
+  def save_books
+    File.write('./data/books.json', JSON.generate(@books))
+  end
+
+  def add_label
+    @labels = File.exist?('./data/labels.json') ? JSON.parse(File.read('./data/labels.json')) : []
+    print 'Enter title: '
+    title = gets.chomp
+    print 'Enter color: '
+    color = gets.chomp
+    if title.empty? || color.empty?
+      puts 'Invalid input. Label not added.'
+    else
+      label = Label.new(title, color)
+      @labels << label
+      File.write('./data/labels.json', JSON.generate(@labels.map(&:to_h)))
+      puts 'Label added successfully!'
     end
-
+  end
 end
-

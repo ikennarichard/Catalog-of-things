@@ -8,12 +8,11 @@ class Label
   end
 
   def add_item(item)
-      @items << item
+    @items << item
     item.label = self
   end
 
   def to_h
     { 'title' => @title, 'color' => @color, 'items' => @items.map(&:to_h) }
   end
-  
 end
