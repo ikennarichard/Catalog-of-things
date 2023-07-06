@@ -6,7 +6,7 @@ class GameHandler
   def initialize
     @games = []
     @authors = []
-    load_games_data
+    retrieve_data
   end
 
   def options
@@ -81,7 +81,7 @@ class GameHandler
           puts '......................................................'
         end
       end
-    end
+      retrieve_data
   end
 
   def display_authors
@@ -95,7 +95,7 @@ class GameHandler
           puts "Author #{index + 1}: #{author.full_name}"
         end
       end
-    end
+      retrieve_data
   end
 
   def preserve_game
