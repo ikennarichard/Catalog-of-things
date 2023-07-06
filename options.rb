@@ -10,6 +10,7 @@ class Options
     puts '6. Add new game'
     puts '7. Quit'
   end
+
   def process_option(app, option)
     actions = {
       1 => -> { app.list_all_genres },

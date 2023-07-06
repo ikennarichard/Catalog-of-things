@@ -5,6 +5,7 @@ require_relative 'author'
 require 'json'
 class App
   attr_accessor :books, :music_albums, :games
+
   def initialize
     @books = []
     @music_albums = []
@@ -12,6 +13,7 @@ class App
     @authors = []
     retrieve_data
   end
+
   # games and author
   def create_game
     puts ''
@@ -32,7 +34,7 @@ class App
       'id' => game.id,
       'multiplayer_game' => game.multiplayer,
       'last_played_date' => game.last_played_at,
-      'released_date' => game.publish_date,
+      'released_date' => game.publish_date
     }
     @authors << {
       'first_name' => game.author.first_name,
@@ -42,6 +44,7 @@ class App
     preserve_game(@games)
     preserve_author(@authors)
   end
+
   def display_games
     puts ''
     if @games.empty?
@@ -55,41 +58,50 @@ class App
         puts "Last Played Date: #{game['last_played_date']}"
         puts "Publish Date: #{game['released_date']}"
         puts '......................................................'
-        puts''
+        puts ''
       end
     end
     retrieve_data
   end
+
   def display_authors
     puts ''
     if @authors.empty?
       puts 'No record for authors found'
     else
       puts 'List of all Authors:'
-      @authors.each_with_index do |author, index|
-        puts "First Name: #{author['first_name']}, Last Name: #{author['last_name']}"
+      @authors.each_with_index do |author, _index|
+        puts "Author's Name: #{author['first_name']} #{author['last_name']}"
       end
     end
     retrieve_data
   end
+
   def preserve_game(game)
     File.write('data/game.json', JSON.generate(game))
   end
+
   def preserve_author(author)
     File.write('data/author.json', JSON.generate(author))
   end
+
   def retrieve_data
     retrieve_game
     retrieve_author
   end
+
   def retrieve_game
     return unless File.exist?('data/game.json')
+
     @games = File.empty?('./data/game.json') ? [] : JSON.parse(File.read('data/game.json'))
   end
+
   def retrieve_author
     return unless File.exist?('data/author.json')
+
     @authors = File.empty?('./data/author.json') ? [] : JSON.parse(File.read('data/author.json'))
   end
+
   def to_json(param)
     {
       'id' => param.id,
@@ -99,6 +111,7 @@ class App
       'archived' => param.archived
     }
   end
+
   # music albums
   def list_music_albums
     @music_albums = File.empty?('./data/music_albums.json') ? [] : JSON.parse(File.read('./data/music_albums.json'))
@@ -113,6 +126,7 @@ class App
       puts
     end
   end
+
   def list_all_genres
     @music_albums = File.empty?('./data/music_albums.json') ? [] : JSON.parse(File.read('./data/music_albums.json'))
     if @music_albums.empty?
@@ -123,6 +137,7 @@ class App
       end
     end
   end
+
   def add_music_album
     @music_albums = File.empty?('./data/music_albums.json') ? [] : JSON.parse(File.read('./data/music_albums.json'))
     print 'Enter album title: '
@@ -144,6 +159,7 @@ class App
     puts ''
     File.write('./data/music_albums.json', JSON.generate(music_albums))
   end
+
   def to_h(album)
     {
       'id' => album.id,
