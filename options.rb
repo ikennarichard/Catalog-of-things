@@ -1,4 +1,3 @@
-
 require_relative 'app'
 class Options
   def display_options
@@ -36,8 +35,6 @@ class Options
       option != 11
     else
       puts 'Invalid option. Please try again.'
-      true
     end
   end
-  
 end

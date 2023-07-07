@@ -3,7 +3,7 @@ require_relative '../book'
 describe Book do
   before(:each) do
     @book = Book.new('The Great Gatsby', 'F. Scott Fitzgerald', '1925-04-10', archived: true)
-  end  
+  end
 
   it 'returns a book object' do
     expect(@book).to be_an_instance_of(Book)
